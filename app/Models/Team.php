@@ -82,6 +82,36 @@ class Team extends Model
     }
 
     /**
+     * Get the repositories connected to this team.
+     *
+     * @return HasMany<Repository, $this>
+     */
+    public function repositories(): HasMany
+    {
+        return $this->hasMany(Repository::class);
+    }
+
+    /**
+     * Get the reports generated within this team.
+     *
+     * @return HasMany<Report, $this>
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    /**
+     * Get the integrations connected to this team.
+     *
+     * @return HasMany<Integration, $this>
+     */
+    public function integrations(): HasMany
+    {
+        return $this->hasMany(Integration::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
