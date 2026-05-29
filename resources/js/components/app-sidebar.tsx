@@ -1,7 +1,14 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import {
+    FileText,
+    FolderGit2,
+    LayoutGrid,
+    MessageSquare,
+    Send,
+    Settings,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { TeamSwitcher } from '@/components/team-switcher';
@@ -9,39 +16,40 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
+    SidebarGroup,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { useTranslation } from '@/lib/i18n';
 import { dashboard } from '@/routes';
+import reports from '@/routes/reports';
+import repositories from '@/routes/repositories';
+import team from '@/routes/team';
 import type { NavItem } from '@/types';
 
 export function AppSidebar() {
     const page = usePage();
-    const dashboardUrl = page.props.currentTeam
-        ? dashboard(page.props.currentTeam.slug)
-        : '/';
+    const { t } = useTranslation();
+    const slug = page.props.currentTeam?.slug;
 
-    const mainNavItems: NavItem[] = [
-        {
-            title: 'Dashboard',
-            href: dashboardUrl,
-            icon: LayoutGrid,
-        },
-    ];
+    const mainNavItems: NavItem[] = slug
+        ? [
+              { title: t('nav.dashboard'), href: dashboard(slug), icon: LayoutGrid },
+              { title: t('nav.reports'), href: reports.index(slug), icon: FileText },
+              {
+                  title: t('nav.repositories'),
+                  href: repositories.index(slug),
+                  icon: FolderGit2,
+              },
+              { title: t('nav.team'), href: team.index(slug), icon: Users },
+          ]
+        : [{ title: t('nav.dashboard'), href: '/', icon: LayoutGrid }];
 
-    const footerNavItems: NavItem[] = [
-        {
-            title: 'Repository',
-            href: 'https://github.com/laravel/react-starter-kit',
-            icon: FolderGit2,
-        },
-        {
-            title: 'Documentation',
-            href: 'https://laravel.com/docs/starter-kits#react',
-            icon: BookOpen,
-        },
+    const accountNavItems: NavItem[] = [
+        { title: t('nav.settings'), href: '/settings', icon: Settings },
     ];
 
     return (
@@ -50,7 +58,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboardUrl} prefetch>
+                            <Link href={slug ? dashboard(slug) : '/'} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -64,11 +72,45 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems} label={t('nav.platform')} />
+
+                <SidebarGroup className="px-2 py-0">
+                    <SidebarGroupLabel>
+                        {t('nav.integrations')}
+                    </SidebarGroupLabel>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                className="cursor-default"
+                                tooltip={{ children: t('nav.slack') }}
+                            >
+                                <MessageSquare />
+                                <span>{t('nav.slack')}</span>
+                                <span
+                                    className="ml-auto size-2 rounded-full bg-signal"
+                                    title={t('common.connected')}
+                                />
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                className="cursor-default text-muted-foreground"
+                                tooltip={{ children: t('nav.telegram') }}
+                            >
+                                <Send />
+                                <span>{t('nav.telegram')}</span>
+                                <span className="ml-auto text-[10px] tracking-wide text-muted-foreground/70 uppercase group-data-[collapsible=icon]:hidden">
+                                    {t('common.comingSoon')}
+                                </span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarGroup>
+
+                <NavMain items={accountNavItems} label={t('nav.account')} />
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

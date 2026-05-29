@@ -28,4 +28,36 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                // Split rarely-changing vendor code out of the main bundle so it
+                // caches independently of app code and stays under the chunk-size
+                // warning threshold.
+                manualChunks(id) {
+                    const path = id.replace(/\\/g, '/');
+
+                    if (!path.includes('/node_modules/')) {
+                        return;
+                    }
+
+                    if (
+                        /\/node_modules\/(react|react-dom|scheduler|react-is)\//.test(
+                            path,
+                        )
+                    ) {
+                        return 'react';
+                    }
+
+                    if (path.includes('/node_modules/@radix-ui/')) {
+                        return 'radix';
+                    }
+
+                    if (path.includes('/node_modules/@inertiajs/')) {
+                        return 'inertia';
+                    }
+                },
+            },
+        },
+    },
 });
