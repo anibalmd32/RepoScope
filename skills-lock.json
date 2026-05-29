@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "storybook": {
+      "source": "dalestudy/skills",
+      "sourceType": "github",
+      "skillPath": "skills/storybook/SKILL.md",
+      "computedHash": "e387b1cf0c09f914d881475a49e3ec3ec34ea6ea913139a87187eaa016735771"
+    }
+  }
+}

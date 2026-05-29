@@ -1,0 +1,5 @@
+import{t as e}from"./jsx-runtime-BcgbbpDw.js";import{t}from"./createLucideIcon-DycOuZj2.js";import{t as n}from"./compiler-runtime-D6ouNXNn.js";import{t as r}from"./utils-B6KiDbIe.js";var i=t(`LoaderCircle`,[[`path`,{d:`M21 12a9 9 0 1 1-6.219-8.56`,key:`13zald`}]]),a=n(),o=e();function s(e){let t=(0,a.c)(8),n,s;t[0]===e?(n=t[1],s=t[2]):({className:n,...s}=e,t[0]=e,t[1]=n,t[2]=s);let c;t[3]===n?c=t[4]:(c=r(`size-4 animate-spin`,n),t[3]=n,t[4]=c);let l;return t[5]!==s||t[6]!==c?(l=(0,o.jsx)(i,{role:`status`,"aria-label":`Loading`,className:c,...s}),t[5]=s,t[6]=c,t[7]=l):l=t[7],l}s.__docgenInfo={description:``,methods:[],displayName:`Spinner`};var c={title:`UI/Spinner`,component:s,tags:[`autodocs`]},l={},u={args:{className:`size-8`}};l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`{}`,...l.parameters?.docs?.source}}},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
+  args: {
+    className: 'size-8'
+  }
+}`,...u.parameters?.docs?.source}}};var d=[`Default`,`Large`];export{l as Default,u as Large,d as __namedExportsOrder,c as default};
