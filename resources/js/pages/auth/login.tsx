@@ -17,9 +17,10 @@ import { request } from '@/routes/password';
 type Props = {
     status?: string;
     canResetPassword: boolean;
+    githubUrl?: string;
 };
 
-export default function Login({ status, canResetPassword }: Props) {
+export default function Login({ status, canResetPassword, githubUrl }: Props) {
     const { t } = useTranslation();
 
     return (
@@ -40,9 +41,11 @@ export default function Login({ status, canResetPassword }: Props) {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <Button type="button" size="lg" className="w-full">
-                        <Github className="size-4" />
-                        {t('auth.continueWithGithub')}
+                    <Button type="button" size="lg" className="w-full" asChild>
+                        <a href={githubUrl || '/auth/github'}>
+                            <Github className="size-4" />
+                            {t('auth.continueWithGithub')}
+                        </a>
                     </Button>
 
                     <PasskeyVerify

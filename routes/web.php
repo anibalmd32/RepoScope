@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GitHubController;
 use App\Http\Controllers\Teams\TeamInvitationController;
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
@@ -39,5 +40,8 @@ Route::prefix('{current_team}')
 Route::middleware(['auth'])->group(function () {
     Route::get('invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('invitations.accept');
 });
+
+Route::get('/auth/github', [GitHubController::class, 'redirect'])->name('auth.github');
+Route::get('/auth/github/callback', [GitHubController::class, 'callback']);
 
 require __DIR__.'/settings.php';

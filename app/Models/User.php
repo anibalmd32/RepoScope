@@ -20,24 +20,27 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
     'email',
     'password',
     'current_team_id',
-    'github_id',
-    'github_nickname',
-    'github_token',
-    'github_refresh_token',
-    'avatar_url',
 ])]
 #[Hidden([
     'password',
     'two_factor_secret',
     'two_factor_recovery_codes',
     'remember_token',
-    'github_token',
-    'github_refresh_token',
 ])]
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasTeams, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    /**
+     * Get the OAuth accounts linked to this user.
+     *
+     * @return HasMany<OauthAccount, $this>
+     */
+    public function oauthAccounts(): HasMany
+    {
+        return $this->hasMany(OauthAccount::class);
+    }
 
     /**
      * Get the reports authored by the user.
@@ -70,6 +73,22 @@ class User extends Authenticatable implements PasskeyUser
     }
 
     /**
+     * Get the user's avatar from their primary OAuth account.
+     */
+    public function getAvatarAttribute(): ?string
+    {
+        return $this->oauthAccounts->first()?->avatar_url;
+    }
+
+    /**
+     * Get a specific provider's OAuth account.
+     */
+    public function oauthAccountFor(string $provider): ?OauthAccount
+    {
+        return $this->oauthAccounts->firstWhere('provider', $provider);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -80,8 +99,6 @@ class User extends Authenticatable implements PasskeyUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
-            'github_token' => 'encrypted',
-            'github_refresh_token' => 'encrypted',
         ];
     }
 }
